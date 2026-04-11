@@ -59,4 +59,6 @@ export const wsBaseUrl =
   import.meta.env.VITE_WS_BASE_URL ||
   import.meta.env.VITE_API_URL ||
   import.meta.env.VITE_API_BASE_URL ||
-  `${window.location.protocol}//${window.location.hostname}:8081`;
+  (window.location.hostname === "localhost"
+    ? `${window.location.protocol}//${window.location.hostname}:8081`
+    : window.location.origin);
