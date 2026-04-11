@@ -42,7 +42,7 @@ httpClient.interceptors.response.use(
             status,
             message: "Session expired. Please login again.",
           },
-        })
+        }),
       );
     }
 
@@ -56,7 +56,7 @@ httpClient.interceptors.response.use(
     };
 
     return Promise.reject(normalizedError);
-  }
+  },
 );
 
 export default httpClient;

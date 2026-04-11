@@ -21,7 +21,8 @@ const API_BASE =
 
 function resolveImageUrl(imageUrl) {
   if (!imageUrl) return null;
-  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) return imageUrl;
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"))
+    return imageUrl;
   return `${API_BASE}${imageUrl}`;
 }
 
@@ -126,7 +127,7 @@ function DonationsPage() {
         typeof donation.latitude === "number" &&
         Number.isFinite(donation.latitude) &&
         typeof donation.longitude === "number" &&
-        Number.isFinite(donation.longitude)
+        Number.isFinite(donation.longitude),
     );
     if (donationWithCoords) {
       return {
@@ -158,7 +159,7 @@ function DonationsPage() {
         await syncLocation(lat, lng);
         success("Current location detected and synced.");
       },
-      () => error("Unable to detect your location.")
+      () => error("Unable to detect your location."),
     );
   };
 
@@ -166,7 +167,11 @@ function DonationsPage() {
     setLoading(true);
     try {
       const params = currentPosition
-        ? { latitude: currentPosition.lat, longitude: currentPosition.lng, limit: 30 }
+        ? {
+            latitude: currentPosition.lat,
+            longitude: currentPosition.lng,
+            limit: 30,
+          }
         : { limit: 30 };
       const { data } = await donationService.nearest(params);
       const result = data || [];
@@ -196,10 +201,20 @@ function DonationsPage() {
         subtitle="Smart matching, server-side search, and live location tracking"
         action={
           <div className="inline-actions">
-            <Button variant="outline" size="sm" onClick={loadDonations}>Refresh</Button>
-            <Button variant="ghost" size="sm" onClick={detectCurrentLocation}>Use My Location</Button>
-            <Button variant="secondary" size="sm" onClick={loadNearest}>Smart Match</Button>
-            <Button variant="outline" size="sm" onClick={() => setShowMap((prev) => !prev)}>
+            <Button variant="outline" size="sm" onClick={loadDonations}>
+              Refresh
+            </Button>
+            <Button variant="ghost" size="sm" onClick={detectCurrentLocation}>
+              Use My Location
+            </Button>
+            <Button variant="secondary" size="sm" onClick={loadNearest}>
+              Smart Match
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowMap((prev) => !prev)}
+            >
               {showMap ? "Hide Map" : "Show Map"}
             </Button>
           </div>
@@ -216,7 +231,10 @@ function DonationsPage() {
             value={locationFilter}
             onChange={(e) => setLocationFilter(e.target.value)}
           />
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
             <option value="ALL">All Status</option>
             {DONATION_STATUSES.map((status) => (
               <option key={status} value={status}>
@@ -228,7 +246,10 @@ function DonationsPage() {
       </Card>
 
       {showMap ? (
-        <Card title="Live Tracking Map" subtitle="Donor and volunteer movement simulation">
+        <Card
+          title="Live Tracking Map"
+          subtitle="Donor and volunteer movement simulation"
+        >
           <DonationMap
             donations={donations}
             center={mapCenter}
@@ -264,10 +285,16 @@ function DonationsPage() {
               </div>
 
               <div className="inline-actions">
-                {donation.bestMatch ? <span className="best-match-pill">Best Match</span> : null}
-                {donation.urgent ? <span className="urgent-pill">URGENT</span> : null}
+                {donation.bestMatch ? (
+                  <span className="best-match-pill">Best Match</span>
+                ) : null}
+                {donation.urgent ? (
+                  <span className="urgent-pill">URGENT</span>
+                ) : null}
                 {donation.distanceKm != null ? (
-                  <span className="distance-pill">{donation.distanceKm.toFixed(2)} km</span>
+                  <span className="distance-pill">
+                    {donation.distanceKm.toFixed(2)} km
+                  </span>
                 ) : null}
               </div>
 
@@ -278,14 +305,26 @@ function DonationsPage() {
               <CountdownTimer expiryTime={donation.expiryTime} />
 
               <div className="inline-actions">
-                <Button variant="ghost" size="sm" onClick={() => setSelectedDonation(donation)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedDonation(donation)}
+                >
                   View Details
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => setTrackingDonation(donation)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setTrackingDonation(donation)}
+                >
                   Track Live
                 </Button>
                 {user?.role !== "DONOR" && donation.status === "PENDING" ? (
-                  <Button variant="primary" size="sm" onClick={() => acceptDonation(donation.id)}>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => acceptDonation(donation.id)}
+                  >
                     Accept Request
                   </Button>
                 ) : null}
@@ -297,7 +336,9 @@ function DonationsPage() {
 
       <Modal
         open={Boolean(selectedDonation)}
-        title={selectedDonation ? `Donation #${selectedDonation.id}` : "Donation"}
+        title={
+          selectedDonation ? `Donation #${selectedDonation.id}` : "Donation"
+        }
         onClose={() => setSelectedDonation(null)}
       >
         {selectedDonation ? (
@@ -309,15 +350,32 @@ function DonationsPage() {
                 alt={selectedDonation.foodName}
               />
             ) : null}
-            <p><strong>Food:</strong> {selectedDonation.foodName}</p>
-            <p><strong>Quantity:</strong> {selectedDonation.quantity}</p>
-            <p><strong>Location:</strong> {selectedDonation.location}</p>
-            <p><strong>Status:</strong> {selectedDonation.status}</p>
-            <p><strong>Donor:</strong> {selectedDonation.donorName}</p>
-            <p><strong>Expiry:</strong> {formatDateTime(selectedDonation.expiryTime)}</p>
-            <p><strong>Distance:</strong> {selectedDonation.distanceKm?.toFixed(2) ?? "N/A"} km</p>
             <p>
-              <strong>Coordinates:</strong> {selectedDonation.latitude}, {selectedDonation.longitude}
+              <strong>Food:</strong> {selectedDonation.foodName}
+            </p>
+            <p>
+              <strong>Quantity:</strong> {selectedDonation.quantity}
+            </p>
+            <p>
+              <strong>Location:</strong> {selectedDonation.location}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedDonation.status}
+            </p>
+            <p>
+              <strong>Donor:</strong> {selectedDonation.donorName}
+            </p>
+            <p>
+              <strong>Expiry:</strong>{" "}
+              {formatDateTime(selectedDonation.expiryTime)}
+            </p>
+            <p>
+              <strong>Distance:</strong>{" "}
+              {selectedDonation.distanceKm?.toFixed(2) ?? "N/A"} km
+            </p>
+            <p>
+              <strong>Coordinates:</strong> {selectedDonation.latitude},{" "}
+              {selectedDonation.longitude}
             </p>
           </div>
         ) : null}

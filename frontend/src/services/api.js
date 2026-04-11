@@ -13,13 +13,15 @@ export const donationService = {
     httpClient.get("/api/donations/nearby", {
       params: { latitude, longitude, radiusKm },
     }),
-  nearest: (params = {}) => httpClient.get("/api/donations/nearest", { params }),
+  nearest: (params = {}) =>
+    httpClient.get("/api/donations/nearest", { params }),
   search: (params = {}) => httpClient.get("/api/donations/search", { params }),
   stats: () => httpClient.get("/api/donations/stats"),
 };
 
 export const requestService = {
-  accept: (donationId) => httpClient.post("/api/requests/accept", { donationId }),
+  accept: (donationId) =>
+    httpClient.post("/api/requests/accept", { donationId }),
   updateStatus: (requestId, status) =>
     httpClient.put("/api/requests/status", { requestId, status }),
   myRequests: () => httpClient.get("/api/requests/my"),

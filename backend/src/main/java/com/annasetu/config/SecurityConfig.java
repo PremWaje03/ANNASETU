@@ -35,10 +35,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/error", "/api/health", "/api/auth/**", "/ws/**", "/uploads/**").permitAll()
+                        .requestMatchers("/", "/error", "/api/health", "/api/auth/**", "/ws/**", "/uploads/**")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/feedback").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -57,8 +57,7 @@ public class SecurityConfig {
                     Arrays.stream(allowedOrigins.split(","))
                             .map(String::trim)
                             .filter(origin -> !origin.isBlank())
-                            .toList()
-            );
+                            .toList());
         }
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
