@@ -1,0 +1,21 @@
+{
+  "java.errors.incompleteClasspath.severity": "ignore",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.assistant.showReleaseNotes": false,
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.c9": true,
+    "**/node_modules": true,
+    "**/.git": true
+  },
+  "java.netbeans.verbose": false,
+  "java.lsp.nullAnalysis.mode": "disabled"
+}
