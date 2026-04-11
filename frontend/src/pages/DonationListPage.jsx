@@ -17,9 +17,7 @@ import { formatDateTime } from "../utils/format";
 const API_BASE =
   import.meta.env.VITE_API_URL ||
   import.meta.env.VITE_API_BASE_URL ||
-  (window.location.hostname === "localhost"
-    ? `${window.location.protocol}//${window.location.hostname}:8081`
-    : window.location.origin);
+  `${window.location.protocol}//${window.location.hostname}:8081`;
 
 function resolveImageUrl(imageUrl) {
   if (!imageUrl) return null;
