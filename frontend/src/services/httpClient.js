@@ -1,10 +1,14 @@
 ﻿import axios from "axios";
 import { STORAGE_KEYS } from "../utils/constants";
 
+const isLocalhost =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
+
 const apiBaseUrl =
   import.meta.env.VITE_API_URL ||
   import.meta.env.VITE_API_BASE_URL ||
-  `${window.location.protocol}//${window.location.hostname}:8081`;
+  (isLocalhost ? "http://localhost:8081" : window.location.origin);
 
 const httpClient = axios.create({
   baseURL: apiBaseUrl,
@@ -59,4 +63,5 @@ httpClient.interceptors.response.use(
   },
 );
 
+export { apiBaseUrl };
 export default httpClient;

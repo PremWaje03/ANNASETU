@@ -1,9 +1,12 @@
 package com.annasetu.config;
 
 import com.annasetu.repository.UserRepository;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,5 +44,24 @@ public class ApplicationConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @Primary
+    public HikariDataSource dataSource(DataSourceProperties properties) {
+        String url = properties.getUrl();
+        if (url != null && !url.startsWith("jdbc:")) {
+            if (url.startsWith("postgres://") || url.startsWith("postgresql://")) {
+                properties.setUrl("jdbc:" + url);
+            }
+        }
+        return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 }
