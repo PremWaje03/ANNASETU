@@ -4,6 +4,8 @@ backend/.gradle/
 backend/*.log
 backend/uploads/
 backend/src/main/resources/application.properties
+backend/*.mv.db
+backend/*.trace.db
 
 # Frontend
 frontend/node_modules/
